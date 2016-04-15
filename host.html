@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>Caja host page</title>
+    <script type="text/javascript" src="//caja.appspot.com/caja.js"/>
+    </script>
+    
+  </head>
+
+  <body>
+    <h1>Caja host page</h1>
+    <div id="guest"></div>
+    <script type="text/javascript">
+
+      var createPanelReturnDom = function() {
+        var div = document.createElement("div");
+        var t = document.createTextNode("This is a paragraph");
+        div.appendChild(t);
+        return caja.tame(div);
+      }
+
+      var createPanelReceiveDom = function(dom) {
+        var div = document.createElement("div");
+        var t = document.createTextNode("This is a paragraph");
+        div.appendChild(t);
+        dom.appendChild(div);
+      }
+ 
+      caja.initialize({
+        cajaServer: 'https://caja.appspot.com',
+        forceES5Mode: true,
+        debug: true
+      });
+
+      caja.load(document.getElementById('guest'), caja.policy.net.ALL, function(frame) {
+
+        
+        frame.code('guest.html',
+                   'text/html')
+              .api({ 'createPanelReturnDom': caja.tame(caja.markFunction(createPanelReturnDom)),
+                'createPanelReceiveDom': caja.tame(caja.markFunction(createPanelReceiveDom))
+              }) 
+              .run();
+     });
+    </script>
+  </body>
+</html>
